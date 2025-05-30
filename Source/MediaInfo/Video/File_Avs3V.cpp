@@ -172,6 +172,27 @@ static const char* Avs3V_extension_start_code_identifier[]=
 };
 
 //---------------------------------------------------------------------------
+static const char* Avs3V_hdr_dmi_types[] =
+{
+    /* 0000 */  "",
+    /* 0001 */  "ST 2094-10 (Dolby Vision)",
+    /* 0010 */  "",
+    /* 0011 */  "",
+    /* 0100 */  "ST 2094-40 (HDR10+)",
+    /* 0101 */  "T/UWA 005 (HDR Vivid)",
+    /* 0110 */  "TS 103 433 (SL-HDR2)",
+    /* 0111 */  "",
+    /* 1000 */  "",
+    /* 1001 */  "",
+    /* 1010 */  "",
+    /* 1011 */  "",
+    /* 1100 */  "",
+    /* 1101 */  "",
+    /* 1110 */  "",
+    /* 1111 */  "",
+};
+
+//---------------------------------------------------------------------------
 static const char* Avs3V_video_format[]=
 {
     /* 000 */ "Component",
@@ -335,7 +356,7 @@ void File_Avs3V::Streams_Fill()
         if (DMI_Found & HAVE_DolbyVision_DMI)
             Fill(Stream_Video, 0, Video_HDR_Format, "SMPTE ST 2094-10");
         if (DMI_Found & HAVE_HDRVivid_DMI)
-            Fill(Stream_Video, 0, Video_HDR_Format, "HDR Vivid");
+            Fill(Stream_Video, 0, Video_HDR_Format, "T/UWA 005 HDR Vivid");
     }
 
     // from Mastering Display and Content Metadata extension
@@ -998,12 +1019,13 @@ void File_Avs3V::extension_start()
                     int8u hdr_dynamic_metadata_type;
                     Get_S1(4, hdr_dynamic_metadata_type,        "hdr_dynamic_metadata_type");
                     switch (hdr_dynamic_metadata_type) {
-                        // values 1, 6, 4 according to DVB Bluebook A001, 5 in AVSV (T/AI 109.2)
-                        case 1: DMI_Found |= HAVE_HDR10plus_DMI; break;
-                        case 4: DMI_Found |= HAVE_DolbyVision_DMI; break;
+                        // values 1, 6, 4 according to ETSI TS 101 154, 5 in AVSV (T/AI 109.2)
+                        case 1: DMI_Found |= HAVE_DolbyVision_DMI; break;
+                        case 4: DMI_Found |= HAVE_HDR10plus_DMI; break;
                         case 5: DMI_Found |= HAVE_HDRVivid_DMI; break;
                         case 6: DMI_Found |= HAVE_SLHDR2_DMI; break;
                     }
+                    Param_Info1(Avs3V_hdr_dmi_types[hdr_dynamic_metadata_type]);
                     BS_End();
                     Skip_XX(Element_Size - Element_Offset,      "extension_data_byte");
                 }
