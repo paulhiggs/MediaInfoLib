@@ -212,6 +212,9 @@ std::string ExtensibleWave_ChannelMask_ChannelLayout(int32u ChannelMask)
 #if defined(MEDIAINFO_ADM_YES)
     #include "MediaInfo/Audio/File_Adm.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_DTS_YES)
     #include "MediaInfo/Audio/File_Dts.h"
 #endif
@@ -1359,6 +1362,15 @@ void File_Riff::AVI__hdlr_strl_strf_auds()
         Parser->Frame_Count_Valid=2;
         Parser->CalculateDelay=true;
         Parser->ShouldContinueParsing=true;
+        StreamItem.Parsers.push_back(Parser);
+    }
+    #endif
+    #if defined(MEDIAINFO_AVS3A_YES)
+    else if (MediaInfoLib::Config.CodecID_Get(Stream_Audio, InfoCodecID_Format_Riff, Codec) == __T("AVS3A"))
+    {
+        File_Avs3a* Parser = new File_Avs3a;
+        //Parser->Frame_Count_Valid = 2;
+        Parser->ShouldContinueParsing = true;
         StreamItem.Parsers.push_back(Parser);
     }
     #endif

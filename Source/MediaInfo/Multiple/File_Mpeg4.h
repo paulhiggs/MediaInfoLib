@@ -225,6 +225,7 @@ private :
     void moov_trak_mdia_minf_stbl_stsd_xxxx_ARES();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_AORD();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_av1C();
+    void moov_trak_mdia_minf_stbl_stsd_xxxx_av3a();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_avcC();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_avcE();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_bitr();
@@ -254,6 +255,7 @@ private :
     void moov_trak_mdia_minf_stbl_stsd_xxxx_fiel();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_gama();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_glbl();
+    void moov_trak_mdia_minf_stbl_stsd_xxxx_dca3();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_hvcC();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_hvcE();
     void moov_trak_mdia_minf_stbl_stsd_xxxx_idfm();

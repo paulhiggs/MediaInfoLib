@@ -113,6 +113,9 @@ using namespace std;
 #if defined(MEDIAINFO_MPEGH3DA_YES)
     #include "MediaInfo/Audio/File_Mpegh3da.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_PCM_YES)
     #include "MediaInfo/Audio/File_Pcm.h"
 #endif
@@ -818,6 +821,7 @@ namespace Elements
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_ARES=0x41524553;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_AORD=0x414F5244;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_av1C=0x61763143;
+    const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_av3a=0x61763361;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_avcC=0x61766343;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_avcE=0x61766345;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_bitr=0x62697472;
@@ -837,6 +841,7 @@ namespace Elements
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_dac3=0x64616333;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_dac4=0x64616334;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_damr=0x64616D72;
+    const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_dca3=0x64636133;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_dec3=0x64656333;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_ddts=0x64647473;
     const int64u moov_trak_mdia_minf_stbl_stsd_xxxx_dfLa=0x64664C61;
@@ -1254,6 +1259,7 @@ void File_Mpeg4::Data_Parse()
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_ARES)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_AORD)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_av1C)
+                                ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_av3a)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_avcC)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_avcE)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_bitr)
@@ -1271,6 +1277,7 @@ void File_Mpeg4::Data_Parse()
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_dac3)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_dac4)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_damr)
+                                ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_dca3)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_dec3)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_ddts)
                                 ATOM(moov_trak_mdia_minf_stbl_stsd_xxxx_dfLa)
@@ -6203,6 +6210,14 @@ void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxxSound()
             Streams[moov_trak_tkhd_TrackID].Parsers.push_back(Parser);
         }
         #endif
+        #if defined(MEDIAINFO_AVS3A_YES)
+        if (MediaInfoLib::Config.CodecID_Get(Stream_Audio, InfoCodecID_Format_Mpeg4, Codec, InfoCodecID_Format) == __T("AVS3A"))
+        {
+            //Creating the parser
+            File_Avs3a* Parser = new File_Avs3a;
+            Streams[moov_trak_tkhd_TrackID].Parsers.push_back(Parser);
+        }
+        #endif
         if (Element_Code==0x6F776D61) //"owma"
         {
             //Parsing
@@ -7586,6 +7601,17 @@ void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxx_dec3()
 }
 
 //---------------------------------------------------------------------------
+void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxx_av3a()
+{
+    Element_Name("AVS3DecoderConfigurationBox");
+
+    if (moov_trak_mdia_minf_stbl_stsd_Pos > 1)
+    {
+        return; //Handling only the first description
+    }
+}
+
+//---------------------------------------------------------------------------
 void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxx_ddts()
 {
     Element_Name("DTSSpecificBox");
@@ -7990,6 +8016,28 @@ void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxx_glbl()
             Pos--;
         }
     }
+}
+
+//---------------------------------------------------------------------------
+void File_Mpeg4::moov_trak_mdia_minf_stbl_stsd_xxxx_dca3()
+{
+    Element_Name("AVS3ADecoderConfigurationData"); 
+    AddCodecConfigurationBoxInfo();
+
+    if (moov_trak_mdia_minf_stbl_stsd_Pos > 1)
+        return; //Handling only the first description
+
+    //Parsing
+    #ifdef MEDIAINFO_AVS3A_YES
+    int8u audio_codec_id;
+    Get_S1(4, audio_codec_id,                               "audio_codec_id");
+
+    Fill(Stream_Audio, StreamPos_Last, "audio_codec_id", audio_codec_id);
+        
+    #else
+        Skip_XX(Element_Size, "AVS3A Data");
+    #endif
+
 }
 
 //---------------------------------------------------------------------------

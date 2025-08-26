@@ -40,6 +40,9 @@
 #if defined(MEDIAINFO_AC3_YES)
     #include "MediaInfo/Audio/File_Ac3.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_DTS_YES)
     #include "MediaInfo/Audio/File_Dts.h"
 #endif
@@ -1420,6 +1423,9 @@ void File_Lxf::Audio_Stream(size_t Pos)
         #ifdef MEDIAINFO_AC3_YES
             Audios[Pos].Parsers.push_back(new File_Ac3());
         #endif //MEDIAINFO_AC3_YES
+        #ifdef MEDIAINFO_AVS3A_YES
+            Audios[Pos].Parsers.push_back(new File_Avs3a());
+        #endif
         #ifdef MEDIAINFO_DTS_YES
             Audios[Pos].Parsers.push_back(new File_Dts());
         #endif //MEDIAINFO_DTS_YES

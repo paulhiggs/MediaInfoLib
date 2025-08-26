@@ -215,6 +215,9 @@
 #if defined(MEDIAINFO_AU_YES)
     #include "MediaInfo/Audio/File_Au.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_CAF_YES)
     #include "MediaInfo/Audio/File_Caf.h"
 #endif
@@ -654,6 +657,9 @@ File__MultipleParsing::File__MultipleParsing()
     #endif
     #if defined(MEDIAINFO_AU_YES)
         Parser.push_back(new File_Au());
+    #endif
+    #if defined(MEDIAINFO_AVS3A_YES)
+        Parser.push_back(new File_Avs3a());
     #endif
     #if defined(MEDIAINFO_CAF_YES)
         Parser.push_back(new File_Caf());

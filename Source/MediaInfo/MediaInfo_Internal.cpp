@@ -565,6 +565,7 @@ Ztring HighestFormat(stream_t StreamKind, size_t Parameter, const ZtringList& In
     static const Char* AACSSR=__T("AAC SSR");
     static const Char* AACLCSBR=__T("AAC LC SBR");
     static const Char* AACLCSBRPS=__T("AAC LC SBR PS");
+    static const Char* AVS3A = __T("AVS3A");
     static const Char* Core=__T("Core");
     static const Char* Discrete=__T("ES Discrete without ES Matrix");
     static const Char* Dep=__T("Dep");

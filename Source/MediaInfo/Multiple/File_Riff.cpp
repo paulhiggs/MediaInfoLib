@@ -35,6 +35,9 @@
 #if defined(MEDIAINFO_ADM_YES)
     #include "MediaInfo/Audio/File_Adm.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_DTS_YES)
     #include "MediaInfo/Audio/File_Dts.h"
 #endif

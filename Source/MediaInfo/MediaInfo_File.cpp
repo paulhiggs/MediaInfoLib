@@ -238,6 +238,9 @@
 #if defined(MEDIAINFO_AU_YES)
     #include "MediaInfo/Audio/File_Au.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_CAF_YES)
     #include "MediaInfo/Audio/File_Caf.h"
 #endif
@@ -669,8 +672,11 @@ static File__Analyze* SelectFromExtension(const String& Parser)
     #if defined(MEDIAINFO_AU_YES)
         if (Parser==__T("Au"))          return new File_Au();
     #endif
+    #if defined(MEDIAINFO_AVS3A_YES)
+        if (Parser == __T("Avs3a"))     return new File_Avs3a();
+    #endif
     #if defined(MEDIAINFO_CAF_YES)
-        if (Parser==__T("Caf"))          return new File_Caf();
+        if (Parser==__T("Caf"))         return new File_Caf();
     #endif
     #if defined(MEDIAINFO_DSF_YES)
         if (Parser==__T("Dsf"))         return new File_Dsf();
@@ -1100,6 +1106,9 @@ int MediaInfo_Internal::ListFormats(const String &File_Name)
     #endif
     #if defined(MEDIAINFO_AU_YES)
         SAFE_DELETE(Info); Info=new File_Au();                 if (((Reader_File*)Reader)->Format_Test_PerParser(this, File_Name)>0) return 1;
+    #endif
+    #if defined(MEDIAINFO_AVS3A_YES)
+        SAFE_DELETE(Info); Info = new File_Avs3a();            if (((Reader_File*)Reader)->Format_Test_PerParser(this, File_Name) > 0) return 1;
     #endif
     #if defined(MEDIAINFO_CAF_YES)
         SAFE_DELETE(Info); Info=new File_Caf();                if (((Reader_File*)Reader)->Format_Test_PerParser(this, File_Name)>0) return 1;

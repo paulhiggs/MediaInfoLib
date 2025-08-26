@@ -2707,6 +2707,7 @@ void MediaInfo_Config_CodecID_Audio_Mpeg4 (InfoMap &Info)
     "ac-3;AC-3\n"
     "alac;ALAC;;Apple Lossless Audio Codec;http://www.apple.com/quicktime/download/standalone.html\n"
     "alaw;ADPCM;;;http://www.apple.com/quicktime/download/standalone.html\n"
+    "av3a;AVS3A;;;http://uhd-world-association.com\n"
     "dtsc;DTS;;;http://www.dts.com\n"
     "dtsh;DTS;;;http://www.dts.com;HRA\n"
     "dtsl;DTS;;;http://www.dts.com;MA\n"

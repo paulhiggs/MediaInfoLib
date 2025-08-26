@@ -59,6 +59,9 @@
 #if defined(MEDIAINFO_AC3_YES)
     #include "MediaInfo/Audio/File_Ac3.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_DTS_YES)
     #include "MediaInfo/Audio/File_Dts.h"
 #endif
@@ -924,6 +927,14 @@ void File_Mpeg4_Descriptors::Descriptor_04()
                             Parser=new File_Ac3;
                         #endif
                         break;
+           // PH!HERE
+           /*
+            case 0x?? : AVS3 Audio
+                        #if defined(MEDIAINFO_AVS3A_YES)
+                            Parser=new File_Avs3a;
+                        #endif
+                        break;
+           */
             case 0xA9 : //DTS
             case 0xAA : //DTS HRA
             case 0xAB : //DTS MA

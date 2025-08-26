@@ -59,6 +59,9 @@
 #if defined(MEDIAINFO_AC4_YES)
     #include "MediaInfo/Audio/File_Ac4.h"
 #endif
+#if defined(MEDIAINFO_AVS3A_YES)
+    #include "MediaInfo/Audio/File_Avs3a.h"
+#endif
 #if defined(MEDIAINFO_DTS_YES)
     #include "MediaInfo/Audio/File_Dts.h"
 #endif
@@ -2783,6 +2786,9 @@ void File_MpegPs::private_stream_1()
             #if defined(MEDIAINFO_AC4_YES)
                 Streams_Private1[private_stream_1_ID].Parsers.push_back(ChooseParser_AC4());
             #endif
+            #if defined(MEDIAINFO_AVS3A_YES)
+                Streams_Private1[private_stream_1_ID].Parsers.push_back(ChooseParser_Avs3A());
+            #endif
             #if defined(MEDIAINFO_DTS_YES)
                 Streams_Private1[private_stream_1_ID].Parsers.push_back(ChooseParser_DTS());
             #endif
@@ -3384,6 +3390,9 @@ void File_MpegPs::audio_stream()
             #if defined(MEDIAINFO_AC4_YES)
                 Streams[stream_id].Parsers.push_back(ChooseParser_AC4());
             #endif
+            #if defined(MEDIAINFO_AVS3A_YES)
+                Streams[stream_id].Parsers.push_back(ChooseParser_Avs3A());
+            #endif
             #if defined(MEDIAINFO_DTS_YES)
                 Streams[stream_id].Parsers.push_back(ChooseParser_DTS());
             #endif
@@ -3862,6 +3871,9 @@ void File_MpegPs::extension_stream()
             #endif
             #if defined(MEDIAINFO_AC4_YES)
                 Streams_Extension[stream_id_extension].Parsers.push_back(ChooseParser_AC4());
+            #endif
+            #if defined(MEDIAINFO_AVS3A_YES)
+                Streams_Extension[stream_id_extension].Parsers.push_back(ChooseParser_DTS());
             #endif
             #if defined(MEDIAINFO_DTS_YES)
                 Streams_Extension[stream_id_extension].Parsers.push_back(ChooseParser_DTS());
@@ -4758,6 +4770,32 @@ File__Analyze* File_MpegPs::ChooseParser_AC4()
         Open_Buffer_Init(Parser);
         Parser->Stream_Prepare(Stream_Audio);
         Parser->Fill(Stream_Audio, 0, Audio_Format, "AC-4");
+    #endif
+    return Parser;
+}
+
+//---------------------------------------------------------------------------
+File__Analyze* File_MpegPs::ChooseParser_Avs3A()
+{
+    //Filling
+    #if defined(MEDIAINFO_AVS3A_YES)
+        File__Analyze* Parser = new File_Avs3a();
+        #if MEDIAINFO_DEMUX
+            if (Config->Demux_Unpacketize_Get())
+            {
+                Demux_UnpacketizeContainer = false; //No demux from this parser
+                Demux_Level = 4; //Intermediate
+                Parser->Demux_Level = 2; //Container
+                Parser->Demux_UnpacketizeContainer = true;
+            }
+        #endif //MEDIAINFO_DEMUX
+    #else
+        //Filling
+        File__Analyze* Parser = new File_Unknown();
+        Open_Buffer_Init(Parser);
+        Parser->Stream_Prepare(Stream_Audio);
+        Parser->Fill(Stream_Audio, 0, Audio_Format, "DTS");
+        Parser->Fill(Stream_Audio, 0, Audio_Codec, "DTS");
     #endif
     return Parser;
 }

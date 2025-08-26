@@ -331,6 +331,7 @@
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Aac_Main.cpp" />
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Aac_Others.cpp" />
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Aptx100.cpp" />
+    <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Avs3a.cpp" />
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Caf.cpp" />
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_Celt.cpp" />
     <ClCompile Include="..\..\..\Source\MediaInfo\Audio\File_ChannelGrouping.cpp" />
